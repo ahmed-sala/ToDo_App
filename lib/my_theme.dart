@@ -29,6 +29,11 @@ class MyTheme{
         fontWeight: FontWeight.bold,
         color: lightPrimary
       ),
+      titleSmall: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          color: Colors.black
+      ),
       bodySmall: TextStyle(
           fontSize: 12,
         color: Colors.black,

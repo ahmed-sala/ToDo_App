@@ -51,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void showBottomSheet(){
     showModalBottomSheet(context: context, builder: (_){
       return BottomSheetWidget();
-    });
+    },isScrollControlled: true);
   }
 
   List<Widget> tabs = [TaskListTab(), Settings_tab()];

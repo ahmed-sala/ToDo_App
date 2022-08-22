@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:todo_app/database/my_database.dart';
+import 'package:todo_app/database/task.dart';
+import 'package:todo_app/diaogeUtlis.dart';
+import 'package:todo_app/home/tasks_lst/task_widget.dart';
 import 'package:todo_app/my_theme.dart';
 
 class TaskWidget extends StatelessWidget {
+  Task task;
+  TaskWidget(this.task);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -12,12 +18,28 @@ class TaskWidget extends StatelessWidget {
           motion: DrawerMotion(),
           children: [
             SlidableAction(
-              onPressed: (_) {},
+              onPressed: (_) {
+                MyDatabase.deleteTask(task).then((value) {
+                  // showMassege(context, 'Task deleted successfully',
+                  //     posActionName: 'Ok');
+                  print('done');
+                }).onError((error, stackTrace) {
+                  showMassege(
+                      context,
+                      'Something went wrong,'
+                      'Please try again later',
+                      posActionName: 'Ok');
+                }).timeout(Duration(seconds: 5), onTimeout: () {
+                  showMassege(context, 'Data delete locally',
+                      posActionName: 'Ok');
+                });
+              },
               icon: Icons.delete,
               backgroundColor: MyTheme.red,
               label: 'Delete',
               borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(12), bottomLeft: Radius.circular(12)),
+                  topLeft: Radius.circular(12),
+                  bottomLeft: Radius.circular(12)),
             ),
           ],
         ),
@@ -42,7 +64,7 @@ class TaskWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'this is title',
+                      task.title ?? "",
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                     SizedBox(
@@ -50,12 +72,8 @@ class TaskWidget extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        Icon(
-                          Icons.access_time,
-                          size: 15,
-                        ),
                         Text(
-                          '10:30 am',
+                          task.desc ?? "",
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ],
