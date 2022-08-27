@@ -40,9 +40,8 @@ void showMassege(BuildContext context, String massege,
           actions: actions,
         );
       },barrierDismissible: isCancelable);
-   void showLoading(BuildContext context, String loadingMassege,
-      {bool isCancelable = true}) {
-    showDialog(
+    void showLoading (BuildContext context, String loadingMassege,
+      {bool isCancelable = true}) => showDialog(
         context: context,
         builder: (buildContext) {
           return AlertDialog(
@@ -57,7 +56,6 @@ void showMassege(BuildContext context, String massege,
             ),
           );
         },barrierDismissible: isCancelable);
-  }
 }
 void hideLoading(BuildContext context){
   Navigator.pop(context);

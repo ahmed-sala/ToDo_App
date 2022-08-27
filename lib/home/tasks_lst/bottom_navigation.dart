@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_app/Provider/app_provider.dart';
 import 'package:todo_app/database/my_database.dart';
 import 'package:todo_app/database/task.dart';
 import 'package:todo_app/date_utils.dart';
-import 'package:todo_app/diaogeUtlis.dart';
+import 'package:todo_app/loadingAndMassege.dart';
+import 'package:todo_app/my_theme.dart';
 
 class BottomSheetWidget extends StatefulWidget {
   @override
@@ -15,6 +18,7 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
   var descController=TextEditingController();
   @override
   Widget build(BuildContext context) {
+    var provider=Provider.of<AppProvider>(context);
     return Container(
       height: MediaQuery.of(context).size.height*.7,
       padding: const EdgeInsets.all(12),
@@ -24,32 +28,51 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text('Add New Task',textAlign: TextAlign.center,style: Theme.of(context).textTheme.titleMedium,),
-            TextFormField(
-              controller: titleController,
-              validator: (text){
-                if (text==null||text.trim().isEmpty){
-                  return'please enter title';
-                }
-                return null;
-              },
-              decoration: InputDecoration(
-                labelText: 'Title',
+            Container(
+
+              decoration: BoxDecoration(
+                  border: Border.all(color: MyTheme.lightPrimary)
+              ),
+              child: TextFormField(
+                controller: titleController,
+                validator: (text){
+                  if (text==null||text.trim().isEmpty){
+                    return'please enter title';
+                  }
+                  return null;
+                },
+                decoration: InputDecoration(
+                  labelText: 'Title',
+                  
+                  labelStyle: TextStyle(
+                    color: provider.isDark()?Colors.white54:Colors.grey
+                  )
+                ),
               ),
             ),
             SizedBox(height: 12,),
-            TextFormField(
-              controller: descController,
-              validator: (text){
-                if (text==null||text.trim().isEmpty){
-                  return'please enter description';
-                }
-                 return null;
-              },
-              style: Theme.of(context).textTheme.titleSmall,
-              minLines: 4,
-              maxLines: 4,
-              decoration: InputDecoration(
-                labelText: 'Description',
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: MyTheme.lightPrimary)
+              ),
+              child: TextFormField(
+                controller: descController,
+                validator: (text){
+                  if (text==null||text.trim().isEmpty){
+                    return'please enter description';
+                  }
+                   return null;
+                },
+                style: Theme.of(context).textTheme.titleSmall,
+                minLines: 4,
+                maxLines: 4,
+                decoration: InputDecoration(
+                  labelText: 'Description',
+                  labelStyle: TextStyle(
+                      color: provider.isDark()?Colors.white54:Colors.grey
+                  ),
+
+                ),
               ),
             ),
             SizedBox(height: 12,),

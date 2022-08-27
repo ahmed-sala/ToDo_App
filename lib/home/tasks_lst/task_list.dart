@@ -1,6 +1,9 @@
 import 'package:calendar_timeline/calendar_timeline.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_app/Provider/app_provider.dart';
+import 'package:todo_app/Provider/taskProvider.dart';
 import 'package:todo_app/database/my_database.dart';
 import 'package:todo_app/database/task.dart';
 import 'package:todo_app/home/tasks_lst/task_widget.dart';
@@ -12,9 +15,19 @@ class TaskListTab extends StatefulWidget {
 
 class _TaskListTabState extends State<TaskListTab> {
   DateTime selectedDate = DateTime.now();
+  late TaskProvider taskProvider;
+  @override
+  void initState(){
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      taskProvider.refreshTasks(selectedDate);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+     taskProvider=Provider.of<TaskProvider>(context);
+    var provider=Provider.of<AppProvider>(context);
     return Container(
       child: Column(
         children: [
@@ -26,43 +39,29 @@ class _TaskListTabState extends State<TaskListTab> {
               if (date == null) return;
               setState(() {
                 selectedDate = date;
+                taskProvider.refreshTasks(selectedDate);
               });
               // on user choose new date
             },
             leftMargin: 20,
-            monthColor: Colors.black,
-            dayColor: Colors.black,
+            monthColor: provider.isDark()?Colors.white:Colors.black,
+            dayColor: provider.isDark()?Colors.white:Colors.black,
             activeDayColor: Theme.of(context).primaryColor,
-            activeBackgroundDayColor: Colors.white,
+            activeBackgroundDayColor: provider.isDark()?Colors.black:Colors.white,
             dotsColor: Theme.of(context).primaryColor,
             selectableDayPredicate: (date) => true,
-            locale: 'en_ISO',
+            locale: 'en',
           ),
           Expanded(
-            child: StreamBuilder<QuerySnapshot<Task>>(
-              //future: MyDatabase.getAllTasks(),
-              stream: MyDatabase.listenForTasksRealTimeUpdate(selectedDate),
-              builder: (buldContext, snapshot) {
-                if (snapshot.hasError) {
-                  return Text('Error loading dada,'
-                      'please try again later');
-                } else if (snapshot.connectionState ==
-                    ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-
-                var data = snapshot.data?.docs.map((e) => e.data()).toList();
-                return ListView.builder(
+            child: ListView.builder(
                   itemBuilder: (buldContext, index) {
-                    return TaskWidget(data![index]);
+                    return TaskWidget(taskProvider.tasks[index]);
                   },
-                  itemCount: data!.length,
-                );
-              },
+                  itemCount: taskProvider.tasks.length,
+                )
+
             ),
-          )
+
         ],
       ),
     );

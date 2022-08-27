@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_app/Provider/app_provider.dart';
 import 'package:todo_app/home/settings/settings_tab.dart';
 import 'package:todo_app/home/tasks_lst/bottom_navigation.dart';
 import 'package:todo_app/home/tasks_lst/task_list.dart';
+import 'package:todo_app/my_theme.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = 'home';
@@ -15,12 +18,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var provider=Provider.of<AppProvider>(context);
     return Scaffold(
       body: tabs[selectedIndex],
       appBar: AppBar(
         title: Text('To Do List'),
       ),
       bottomNavigationBar: BottomAppBar(
+
         shape: CircularNotchedRectangle(),
         notchMargin: 8,
         child: BottomNavigationBar(
@@ -31,7 +36,8 @@ class _HomeScreenState extends State<HomeScreen> {
             });
           },
           items: [
-            BottomNavigationBarItem(icon: Icon(Icons.list), label: ''),
+            BottomNavigationBarItem(icon: Icon(Icons.list), label: '',
+                ),
             BottomNavigationBarItem(icon: Icon(Icons.settings), label: ''),
           ],
         ),
@@ -39,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         shape: StadiumBorder(
-          side: BorderSide(color: Colors.white, width: 5),
+          side: BorderSide(color:provider.isDark()?MyTheme.darkScafoldBackground: Colors.white, width: 5),
         ),
         onPressed: () {
           showBottomSheet();

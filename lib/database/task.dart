@@ -26,4 +26,5 @@ class Task {
       'isDone': isDone
     };
   }
+
 }

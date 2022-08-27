@@ -28,7 +28,14 @@ class MyDatabase{
    return getTasksCollection().where('dateTime',isEqualTo: dateOnly(selectedDate).millisecondsSinceEpoch).snapshots();
   }
   static Future<void> deleteTask(Task task){
-    var doca= getTasksCollection().doc(task.id);
-    return doca.delete();
+    var doc= getTasksCollection().doc(task.id);
+    return doc.delete();
+
+  }
+  static editIsDone(Task task){
+    var taskRef = MyDatabase.getTasksCollection();
+    taskRef.doc(task.id).update({
+      'isDone':!task.isDone!,
+    });
   }
 }
