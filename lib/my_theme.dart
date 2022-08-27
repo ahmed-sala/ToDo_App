@@ -44,8 +44,14 @@ class MyTheme{
           color: Colors.black
       ),
       bodySmall: TextStyle(
-          fontSize: 12,
+
+          fontSize: 16,
         color: Colors.black,
+      ),
+      titleLarge: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          color: Colors.black
       ),
     ),
       bottomAppBarTheme: BottomAppBarTheme(
@@ -88,8 +94,13 @@ class MyTheme{
           color: Colors.white
       ),
       bodySmall: TextStyle(
-        fontSize: 12,
+        fontSize: 16,
         color: Colors.white,
+      ),
+      titleLarge: TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+        color: Colors.white
       ),
     ),
     bottomAppBarTheme: BottomAppBarTheme(

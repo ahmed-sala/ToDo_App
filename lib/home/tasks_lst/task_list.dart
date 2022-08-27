@@ -20,7 +20,7 @@ class _TaskListTabState extends State<TaskListTab> {
   void initState(){
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      taskProvider.refreshTasks(selectedDate);
+      // taskProvider.refreshTasks(selectedDate);
     });
   }
 
@@ -32,6 +32,7 @@ class _TaskListTabState extends State<TaskListTab> {
       child: Column(
         children: [
           CalendarTimeline(
+            showYears: true,
             initialDate: selectedDate,
             firstDate: DateTime.now().subtract(Duration(days: 365)),
             lastDate: DateTime.now().add(Duration(days: 365)),
@@ -53,13 +54,29 @@ class _TaskListTabState extends State<TaskListTab> {
             locale: 'en',
           ),
           Expanded(
-            child: ListView.builder(
-                  itemBuilder: (buldContext, index) {
-                    return TaskWidget(taskProvider.tasks[index]);
-                  },
-                  itemCount: taskProvider.tasks.length,
-                )
+            child: StreamBuilder<QuerySnapshot<Task>>(
+              //future: MyDatabase.getAllTasks(),
+              stream: MyDatabase.listenForTasksRealTimeUpdate(selectedDate),
+              builder: (buldContext, snapshot) {
+                if (snapshot.hasError) {
+                  return Text('Error loading dada,'
+                      'please try again later');
+                } else if (snapshot.connectionState ==
+                    ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
 
+                var data = snapshot.data?.docs.map((e) => e.data()).toList();
+                return ListView.builder(
+                  itemBuilder: (buldContext, index) {
+                    return TaskWidget(data![index]);
+                  },
+                  itemCount: data!.length,
+                );
+              },
+            ),
             ),
 
         ],

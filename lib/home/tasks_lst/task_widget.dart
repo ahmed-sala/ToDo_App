@@ -23,7 +23,10 @@ class _TaskWidgetState extends State<TaskWidget> {
     var provider=Provider.of<AppProvider>(context);
     return InkWell(
       onTap: (){
-        Navigator.of(context).pushNamed(EditTaskScreen.routeName);
+        Navigator.push(context,
+            MaterialPageRoute(
+          builder: (context)=> EditTaskScreen(widget.task),
+        ));
       },
       child: Container(
         margin: EdgeInsets.all(8),

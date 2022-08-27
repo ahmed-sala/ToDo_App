@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:todo_app/database/task.dart';
 import 'package:todo_app/date_utils.dart';
+import 'package:todo_app/extention/date.dart';
 
 class MyDatabase{
   static CollectionReference<Task>getTasksCollection(){
@@ -37,5 +38,14 @@ class MyDatabase{
     taskRef.doc(task.id).update({
       'isDone':!task.isDone!,
     });
+  }
+  static Future<void> editTaskDetails(Task task){
+    var toDoRef=getTasksCollection();
+    return toDoRef.doc(task.id).update({
+      'title':task.title,
+      'desc':task.desc,
+      'dateTime':task.dateTime!.getDateOnly().millisecondsSinceEpoch
+    });
+
   }
 }

@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
       supportedLocales: AppLocalizations.supportedLocales,
       routes: {
         HomeScreen.routeName: (_) => HomeScreen(),
-        EditTaskScreen.routeName: (_) => EditTaskScreen(),
+        // EditTaskScreen.routeName: (_) => EditTaskScreen(),
 
       },
       initialRoute: HomeScreen.routeName,
