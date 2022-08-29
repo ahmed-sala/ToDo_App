@@ -15,7 +15,7 @@ class Task {
             id: data['id'],
             title: data['title'],
             desc: data['desc'],
-            dateTime: DateTime.fromMicrosecondsSinceEpoch(data['dateTime']),
+            dateTime: DateTime.fromMillisecondsSinceEpoch(data['dateTime']),
             isDone: data['isDone']);
   Map<String, dynamic> toFirestore() {
     return {

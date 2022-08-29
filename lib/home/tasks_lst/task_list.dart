@@ -17,7 +17,7 @@ class _TaskListTabState extends State<TaskListTab> {
   DateTime selectedDate = DateTime.now();
   late TaskProvider taskProvider;
   @override
-  void initState(){
+  void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // taskProvider.refreshTasks(selectedDate);
@@ -26,8 +26,8 @@ class _TaskListTabState extends State<TaskListTab> {
 
   @override
   Widget build(BuildContext context) {
-     taskProvider=Provider.of<TaskProvider>(context);
-    var provider=Provider.of<AppProvider>(context);
+    taskProvider = Provider.of<TaskProvider>(context);
+    var provider = Provider.of<AppProvider>(context);
     return Container(
       child: Column(
         children: [
@@ -40,15 +40,16 @@ class _TaskListTabState extends State<TaskListTab> {
               if (date == null) return;
               setState(() {
                 selectedDate = date;
-                taskProvider.refreshTasks(selectedDate);
+                // taskProvider.refreshTasks(selectedDate);
               });
               // on user choose new date
             },
             leftMargin: 20,
-            monthColor: provider.isDark()?Colors.white:Colors.black,
-            dayColor: provider.isDark()?Colors.white:Colors.black,
+            monthColor: provider.isDark() ? Colors.white : Colors.black,
+            dayColor: provider.isDark() ? Colors.white : Colors.black,
             activeDayColor: Theme.of(context).primaryColor,
-            activeBackgroundDayColor: provider.isDark()?Colors.black:Colors.white,
+            activeBackgroundDayColor:
+                provider.isDark() ? Colors.black : Colors.white,
             dotsColor: Theme.of(context).primaryColor,
             selectableDayPredicate: (date) => true,
             locale: 'en',
@@ -77,8 +78,7 @@ class _TaskListTabState extends State<TaskListTab> {
                 );
               },
             ),
-            ),
-
+          ),
         ],
       ),
     );

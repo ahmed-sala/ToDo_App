@@ -28,7 +28,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<AppProvider>(context);
-    taskProvider = Provider.of<TaskProvider>(context);
+    // taskProvider = Provider.of<TaskProvider>(context);
     Size size = MediaQuery.of(context).size;
     //
     // titleController = TextEditingController();
@@ -143,7 +143,8 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                           },
                           child: Center(
                             child: Text(
-                              '${selectedDate.year}/${selectedDate.month}/${selectedDate.day}',
+                              // '${dateOnly(widget.task.dateTime!)}',
+                               '${selectedDate.year}/${selectedDate.month}/${selectedDate.day}',
                               style: Theme.of(context).textTheme.bodySmall,
                             ),
                           ),
@@ -154,7 +155,6 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                           child: MaterialButton(
                             onPressed: () {
                               editTask();
-                              // hideLoading(context);
                             },
                             minWidth: 255,
                             height: 55,
@@ -193,140 +193,17 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
     if (date != null) {
       setState(() {
         selectedDate = date;
+        widget.task.dateTime=selectedDate;
       });
     }
   }
 
-  void editTask() {
-    MyDatabase.editTaskDetails(widget.task)
-        .then((value) {
-      taskProvider.refreshTasks(selectedDate);
+  void editTask() async {
 
-    }).catchError((error){
-      print(error);
-    }
-
-    );
     Navigator.pop(context);
+    await MyDatabase.editTaskDetails(widget.task);
+
+
   }
 }
-// var formKey = GlobalKey<FormState>();
-// late TextEditingController titleController ;
-// late TextEditingController descController ;
-// late DateTime selectedDate ;
-// @override
-// void initState(){
-//   super.initState();
-//   WidgetsBinding.instance.addPostFrameCallback((_) {
-//     titleController.text=task.title!;
-//     descController.text=task.desc!;
-//     selectedDate=task.dateTime!;
-//     task=ModalRoute.of(context)!.settings.arguments as Task;
-//   });
 
-// late Task task;
-
-//   void editTask() {
-//     if(formKey.currentState?.validate()==true){
-//       String title=titleController.text;
-//       String desc=descController.text;
-//       Task editedTask=Task(
-//         id:task.id ,
-//         title: title,
-//           desc: desc,
-//           dateTime: dateOnly(selectedDate),
-//         isDone: task.isDone
-//           );
-//       showLoading(context, 'Loading....');
-//       var taskRef = MyDatabase.getTasksCollection();
-//       taskRef.doc(task.id).update(editedTask.toFirestore());
-//     }
-//   }
-//   void showLoading (BuildContext context, String loadingMassege,
-//       {bool isCancelable = true}) => showDialog(
-//       context: context,
-//       builder: (buildContext) {
-//         return AlertDialog(
-//           content: Row(
-//             children: [
-//               CircularProgressIndicator(),
-//               SizedBox(
-//                 width: 12,
-//               ),
-//               Text(loadingMassege),
-//             ],
-//           ),
-//         );
-//       },barrierDismissible: isCancelable);
-// }
-//   Form(
-//   key: formKey,
-//   child: Column(
-//   crossAxisAlignment: CrossAxisAlignment.stretch,
-//   children: [
-//   Text(
-//   'Edit Task',
-//   textAlign: TextAlign.center,
-//   style: Theme.of(context).textTheme.titleMedium,
-//   ),
-//   SizedBox(height: 10,),
-//   Container(
-//   decoration: BoxDecoration(
-//   border: Border.all(color: MyTheme.lightPrimary)),
-//   child: TextFormField(
-//   controller: titleController,
-//   validator: (text) {
-//   if (text == null || text.trim().isEmpty) {
-//   return 'please enter title';
-//   }
-//   return null;
-//   },
-//   decoration: InputDecoration(
-//   labelText: 'Title',
-//   labelStyle: TextStyle(
-//   color: provider.isDark()
-//   ? Colors.white54
-//       : Colors.grey)),
-//   ),
-//   ),
-//   SizedBox(
-//   height: 12,
-//   ),
-//   Container(
-//   decoration: BoxDecoration(
-//   border: Border.all(color: MyTheme.lightPrimary)),
-//   child: TextFormField(
-//   controller: descController,
-//   validator: (text) {
-//   if (text == null || text.trim().isEmpty) {
-//   return 'please enter description';
-//   }
-//   return null;
-//   },
-//   style: Theme.of(context).textTheme.titleSmall,
-//   minLines: 4,
-//   maxLines: 4,
-//   decoration: InputDecoration(
-//   labelText: 'Description',
-//   labelStyle: TextStyle(
-//   color: provider.isDark()
-//   ? Colors.white54
-//       : Colors.grey),
-//   ),
-//   ),
-//   ),
-//   SizedBox(
-//   height: 12,
-//   ),
-//   Text('Select Date',
-//   style: Theme.of(context).textTheme.titleMedium),
-//   DateWidget(selectedDate),
-//   ElevatedButton(
-//   onPressed: () {
-//   editTask();
-//   Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
-//   },
-//   child: Text('Add')),
-//   ],
-//   ),
-//   ),

@@ -90,7 +90,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                       Row(
                         children: [
                           Text(
-                            widget.task.desc ?? "",
+                            '${widget.task.desc}' ,
                             style: Theme.of(context).textTheme.bodySmall,
                           ),
                         ],
